@@ -1,0 +1,87 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <Clients.h>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+void AddClient(ofstream& fine){
+  string first;
+  cout << "Enter first name: " << endl;
+  getline(cin, first);
+
+  string last;
+  cout << "Enter last name: " << endl;
+  getline(cin, last);
+
+  string address;
+  cout << "Enter address: " << endl;
+  getline(cin, address);
+
+  string number;
+  cout << "Enter Sales to Date: " << endl;
+  getline(cin, number);
+
+  fine << first << "   " << last << "   " << address << "   " << number << endl;
+
+}
+int main()
+{
+    vector <Clients> Cli;
+
+    ifstream fin;
+    fin.open("Clientsread.txt");
+    string s;
+
+    while(getline(fin, s)){
+        cout << s << endl;
+    }
+    fin.close();
+
+    ofstream file1;
+    file1.open("UpdatedList.txt");
+
+    ifstream fin2;
+    fin2.open("Clientsread.txt");
+    string s2;
+
+    while(getline(fin2, s2)){
+        file1 << s2 << endl;
+    }
+    fin2.close();
+
+    AddClient(file1);
+    file1.close();
+
+    ifstream fin3;
+    fin3.open("UpdatedList.txt");
+    string s3;
+
+    while(getline(fin3, s3)){
+        cout << s3 << endl;
+
+        istringstream inSS(s3);
+
+        string fir, las, adr, numb;
+        inSS >> fir;
+        inSS >> las;
+        inSS >> adr;
+        inSS >> numb;
+
+        Clients customer(fir, las, adr, numb);
+        Cli.push_back(customer);
+    }
+    fin3.close();
+
+    int x = 0;
+    cout << "Enter the row number to print from the list above: " << endl;
+    cin >> x;
+
+    Cli[x].PrintInfo();
+
+    std::cin.get();
+
+    return 0;
+}
